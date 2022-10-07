@@ -9,7 +9,15 @@ import App from './App.vue'
 import router from '@/router'
 import store from '@/store'
 
-import '@/service/axios_demo'
+import { myAxios } from './service'
+
+const a1 = new myAxios({
+  url: 'http://httpbin.org/get'
+})
+
+a1.request({
+  url: '/'
+})
 
 const app = createApp(App)
 
