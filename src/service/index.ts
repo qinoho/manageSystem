@@ -1,3 +1,8 @@
 import myAxios from './request'
 
-export { myAxios }
+const myAxiosInstance = new myAxios({
+  baseURL: 'http://httpbin.org',
+  isShowLoading: false
+})
+
+export { myAxiosInstance }

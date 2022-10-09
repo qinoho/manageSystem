@@ -1,10 +1,14 @@
 import axios from 'axios'
+import { ElLoading } from 'element-plus'
+
 import type { AxiosInstance } from 'axios'
 
 import { myAxiosRequestConfig } from './type'
 
 class myAxios {
   instance: AxiosInstance
+  loadingInstance: any
+  isShowLoading?: boolean = true
 
   constructor(config: myAxiosRequestConfig) {
     this.instance = axios.create(config)
@@ -17,11 +21,21 @@ class myAxios {
       config.myInterceptors?.responseInterceptors,
       config.myInterceptors?.responseInterceptorsCatch
     )
-
+    this.isShowLoading = config.isShowLoading
     // 为每个实例都创建拦截器
     this.instance.interceptors.request.use(
       (config) => {
-        console.log('每个实例都有的request拦截器')
+        // console.log('每个实例都有的request拦截器')
+        // 根据用户自定义是否展示 loading 动画
+        if (this.isShowLoading) {
+          this.loadingInstance = ElLoading.service({
+            lock: true,
+            text: 'Loaing....',
+            background: 'rgba(0, 0, 0, 0.5)',
+            fullscreen: true
+          })
+        }
+
         return config
       },
       (err) => {
@@ -30,8 +44,8 @@ class myAxios {
     )
     this.instance.interceptors.response.use(
       (res) => {
-        console.log('每个实例都有的response拦截器')
-        console.log(res)
+        // console.log('每个实例都有的response拦截器')
+        this.loadingInstance?.close()
         return res
       },
       (err) => {
@@ -40,12 +54,24 @@ class myAxios {
     )
   }
 
-  request(config: myAxiosRequestConfig) {
+  request<T>(config: myAxiosRequestConfig): Promise<T> {
     // 为每一个次的请求注册拦截器
-    if (config.myInterceptors?.requestInterceptors) {
-      config = config.myInterceptors.requestInterceptors(config)
-    }
-    this.instance.request(config)
+    return new Promise((resolve, reject) => {
+      if (config.myInterceptors?.requestInterceptors) {
+        config = config.myInterceptors.requestInterceptors(config)
+      }
+      this.instance
+        .request(config)
+        .then((res) => {
+          if (config.myInterceptors?.responseInterceptors) {
+            res = config.myInterceptors.responseInterceptors(res)
+          }
+          resolve(res.data)
+        })
+        .catch((err) => {
+          reject(err)
+        })
+    })
   }
 }
 

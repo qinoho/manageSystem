@@ -1,5 +1,7 @@
 import { createApp } from 'vue'
 import App from './App.vue'
+import 'normalize.css'
+import '@/assets/css/index.less'
 
 // 全局引入
 // import ElementPlus from 'element-plus'
@@ -9,15 +11,23 @@ import App from './App.vue'
 import router from '@/router'
 import store from '@/store'
 
-import { myAxios } from './service'
+import { myAxiosInstance } from './service'
 
-const a1 = new myAxios({
-  url: 'http://httpbin.org/get'
-})
+type dataType = {
+  data: string
+  responseCode: number
+  success: boolean
+}
 
-a1.request({
-  url: '/'
-})
+myAxiosInstance
+  .request<dataType>({
+    url: '/get'
+  })
+  .then((res) => {
+    console.log(res)
+    console.log(res.data)
+    console.log(res.responseCode)
+  })
 
 const app = createApp(App)
 
