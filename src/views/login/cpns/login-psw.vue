@@ -1,78 +1,80 @@
 <template>
-  <div class="login-phone">
+  <div class="login-psw">
     <el-form
       ref="ruleFormRef"
-      :model="ruleForm"
+      :model="account"
       :rules="rules"
-      class="demo-ruleForm"
-      status-icon
+      class="account-ruleForm"
     >
       <el-form-item label="账号" prop="name">
-        <el-input v-model="ruleForm.name" />
+        <el-input v-model="account.name" placeholder="请输入账号..." />
       </el-form-item>
       <el-form-item label="密码" prop="password">
-        <el-input v-model="ruleForm.password" type="password" />
+        <el-input
+          v-model="account.password"
+          type="password"
+          placeholder="请输入密码..."
+          show-password
+        />
       </el-form-item>
 
       <div class="check_register">
         <el-checkbox v-model="isChecked" label="记住密码" size="small" />
         <el-link type="primary">立即注册</el-link>
       </div>
-
-      <el-form-item>
-        <el-button
-          class="el-btn-login"
-          type="primary"
-          @click="submitForm(ruleFormRef)"
-          >登录</el-button
-        >
-      </el-form-item>
     </el-form>
   </div>
 </template>
 
 <script lang="ts">
 import { defineComponent, reactive, ref } from 'vue'
+import { useStore } from 'vuex'
+
 import type { FormInstance, FormRules } from 'element-plus'
+
+import localCache from '@/utils/cache'
 
 import { account_rules } from '../config/index'
 export default defineComponent({
   setup() {
+    // 使用vuex
+    const store = useStore()
+    // 表单ref
     const ruleFormRef = ref<FormInstance>()
-    const ruleForm = reactive({
-      name: '',
-      password: ''
+    // 账号密码
+    const account = reactive({
+      name: localCache.getCacheItem('name') ?? '',
+      password: localCache.getCacheItem('password') ?? ''
     })
-    let isChecked = ref(false)
-
+    // 是否记住密码
+    let isChecked = ref(true)
+    // 账号密码的规则
     const rules = reactive<FormRules>(account_rules)
-
-    const submitForm = async (formEl: FormInstance | undefined) => {
-      if (!formEl) return
-      await formEl.validate((valid, fields) => {
+    function loginAction() {
+      ruleFormRef.value?.validate((valid) => {
         if (valid) {
-          console.log('submit!')
-        } else {
-          console.log('error submit!', fields)
+          if (isChecked.value) {
+            localCache.setCache('name', account.name)
+            localCache.setCache('password', account.password)
+          } else {
+            localCache.removeCacheItem('name')
+            localCache.removeCacheItem('password')
+          }
         }
+        store.dispatch('loginModule/accountLoginAction', { ...account })
       })
     }
-    return { ruleFormRef, ruleForm, rules, submitForm, isChecked }
+    return { ruleFormRef, account, rules, isChecked, loginAction }
   }
 })
 </script>
 
 <style scoped lang="less">
-.demo-ruleForm {
-  padding: 15px;
+.account-ruleForm {
+  padding: 15px 15px 0;
   .check_register {
     display: flex;
     justify-content: space-between;
-    margin-bottom: 10px;
-  }
-  .el-btn-login {
-    margin-top: 10px;
-    flex: 1;
   }
 }
 </style>

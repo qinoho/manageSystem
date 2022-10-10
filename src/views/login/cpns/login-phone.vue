@@ -1,6 +1,6 @@
 <template>
-  <div class="login-psw">
-    <el-empty description=" " class="description-phone" />
+  <div class="login-phone">
+    <p>暂未开放...</p>
   </div>
 </template>
 
@@ -8,7 +8,10 @@
 import { defineComponent } from 'vue'
 export default defineComponent({
   setup() {
-    return {}
+    function loginAction() {
+      console.log('PHONE')
+    }
+    return { loginAction }
   }
 })
 </script>
@@ -17,7 +20,6 @@ export default defineComponent({
 .description-phone {
   padding: 0;
   margin: 0 auto;
-  height: 50%;
-  width: 50%;
+  height: inherit;
 }
 </style>

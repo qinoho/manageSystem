@@ -11,24 +11,6 @@ import '@/assets/css/index.less'
 import router from '@/router'
 import store from '@/store'
 
-import { myAxiosInstance } from './service'
-
-type dataType = {
-  data: string
-  responseCode: number
-  success: boolean
-}
-
-myAxiosInstance
-  .request<dataType>({
-    url: '/get'
-  })
-  .then((res) => {
-    console.log(res)
-    console.log(res.data)
-    console.log(res.responseCode)
-  })
-
 const app = createApp(App)
 
 app.use(router).use(store)

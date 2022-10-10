@@ -54,7 +54,7 @@ class myAxios {
     )
   }
 
-  request<T>(config: myAxiosRequestConfig): Promise<T> {
+  request<T = any>(config: myAxiosRequestConfig): Promise<T> {
     // 为每一个次的请求注册拦截器
     return new Promise((resolve, reject) => {
       if (config.myInterceptors?.requestInterceptors) {
@@ -66,6 +66,7 @@ class myAxios {
           if (config.myInterceptors?.responseInterceptors) {
             res = config.myInterceptors.responseInterceptors(res)
           }
+          console.log(res)
           resolve(res.data)
         })
         .catch((err) => {

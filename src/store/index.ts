@@ -1,10 +1,15 @@
 import { createStore } from 'vuex'
+import loginModule from './login'
 
 const store = createStore({
   state() {
     return {
-      message: 'hello world'
+      name: '',
+      age: 1
     }
+  },
+  modules: {
+    loginModule
   }
 })
 
