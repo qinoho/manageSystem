@@ -55,6 +55,8 @@ class myAxios {
   }
 
   request<T = any>(config: myAxiosRequestConfig): Promise<T> {
+    const isShowLoading = config.isShowLoading
+    !isShowLoading && (this.isShowLoading = false)
     // 为每一个次的请求注册拦截器
     return new Promise((resolve, reject) => {
       if (config.myInterceptors?.requestInterceptors) {
@@ -65,9 +67,11 @@ class myAxios {
         .then((res) => {
           if (config.myInterceptors?.responseInterceptors) {
             res = config.myInterceptors.responseInterceptors(res)
+            this.isShowLoading = true
           }
           console.log(res)
           resolve(res.data)
+          this.isShowLoading = true
         })
         .catch((err) => {
           reject(err)

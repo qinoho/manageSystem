@@ -1,4 +1,5 @@
 import { Module } from 'vuex'
+import router from '@/router'
 
 import {
   accountLoginRequest,
@@ -33,6 +34,7 @@ const loginModule: Module<IloginState, IrootState> = {
     saveUserMenus(state, userMenus: any) {
       state.userMenus = userMenus
       localCache.setCache('userMenus', userMenus)
+      console.log(userMenus)
     }
   },
   actions: {
@@ -55,6 +57,23 @@ const loginModule: Module<IloginState, IrootState> = {
       // 获取用户菜单
       const userMenus = await getUserMenusRequest(id)
       commit('saveUserMenus', userMenus)
+
+      router.push('/main')
+    },
+    loadLocalCache({ commit }) {
+      const token = localCache.getCacheItem('token')
+      if (token) {
+        commit('saveToken', token)
+        // dispatch('getInitalDataAction', null, { root: true })
+      }
+      const userInfo = localCache.getCacheItem('userInfo')
+      if (userInfo) {
+        commit('saveUserInfo', userInfo)
+      }
+      const userMenus = localCache.getCacheItem('userMenus')
+      if (userMenus) {
+        commit('saveUserMenus', userMenus)
+      }
     }
   }
 }

@@ -13,4 +13,8 @@ const store = createStore({
   }
 })
 
+export function setupStore() {
+  store.dispatch('loginModule/loadLocalCache')
+}
+
 export default store

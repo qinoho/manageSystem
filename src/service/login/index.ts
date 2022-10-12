@@ -24,18 +24,21 @@ export function accountLoginRequest(account: AccountType) {
 export function accountLoginTestRequest() {
   return myAxiosInstance.request<AccountLoginType>({
     url: LOGIN_URL_API.AccountTest,
-    method: 'get'
+    method: 'get',
+    isShowLoading: false
   })
 }
 export function geuUserInfoRequest(id: number) {
   return myAxiosInstance.request<AccountLoginType>({
     url: LOGIN_URL_API.UserInfo + id,
-    method: 'get'
+    method: 'get',
+    isShowLoading: false
   })
 }
 export function getUserMenusRequest(id: number) {
   return myAxiosInstance.request<AccountLoginType>({
-    url: LOGIN_URL_API.UserMenus + id,
-    method: 'get'
+    url: LOGIN_URL_API.UserMenus + id + '/menu',
+    method: 'get',
+    isShowLoading: true
   })
 }
