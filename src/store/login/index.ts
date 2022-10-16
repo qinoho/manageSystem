@@ -8,6 +8,7 @@ import {
   getUserMenusRequest
 } from '@/service/login'
 import localCache from '@/utils/cache'
+import { menusMapToRoutes } from '@/utils/mapMenusToRoutes'
 
 import type { IloginState } from './type'
 import type { IrootState } from '../type'
@@ -34,7 +35,10 @@ const loginModule: Module<IloginState, IrootState> = {
     saveUserMenus(state, userMenus: any) {
       state.userMenus = userMenus
       localCache.setCache('userMenus', userMenus)
-      console.log(userMenus)
+      const userRouters = menusMapToRoutes(userMenus.data)
+      userRouters.forEach((item) => {
+        router.addRoute('main', item)
+      })
     }
   },
   actions: {

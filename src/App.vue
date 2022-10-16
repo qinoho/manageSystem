@@ -22,4 +22,7 @@ export default defineComponent({
   width: 100%;
   height: 100%;
 }
+.el-input__wrapper {
+  user-select: none;
+}
 </style>

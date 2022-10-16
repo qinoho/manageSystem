@@ -12,7 +12,6 @@ import router from '@/router'
 import store from '@/store'
 import { setupStore } from '@/store/index'
 const app = createApp(App)
-
 setupStore()
 app.use(router).use(store)
 app.mount('#app')

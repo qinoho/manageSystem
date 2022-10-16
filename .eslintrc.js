@@ -18,6 +18,7 @@ module.exports = {
     'vue/multi-word-component-names': 'off',
     '@typescript-eslint/no-explicit-any': 'off',
     'vue/no-v-for-template-key-on-child': 'off',
-    'vue/no-v-for-template-key': 'off'
+    'vue/no-v-for-template-key': 'off',
+    '@typescript-eslint/no-var-requires': 'off'
   }
 }
