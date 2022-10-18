@@ -69,7 +69,6 @@ class myAxios {
             res = config.myInterceptors.responseInterceptors(res)
             this.isShowLoading = true
           }
-          console.log(res)
           resolve(res.data)
           this.isShowLoading = true
         })

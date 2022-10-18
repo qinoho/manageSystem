@@ -11,7 +11,11 @@ import '@/assets/css/index.less'
 import router from '@/router'
 import store from '@/store'
 import { setupStore } from '@/store/index'
+
+import { regesterProperties } from './global/registerProerties'
+
 const app = createApp(App)
+
 setupStore()
-app.use(router).use(store)
+app.use(router).use(store).use(regesterProperties)
 app.mount('#app')

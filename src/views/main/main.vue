@@ -13,7 +13,7 @@
           <navbar-header @isCollapse="isFold"></navbar-header>
         </el-header>
         <el-main class="main-page-content">
-          <router-view @myEvent="aaa()"></router-view>
+          <router-view></router-view>
         </el-main>
       </el-container>
     </el-container>
@@ -35,10 +35,7 @@ export default defineComponent({
     function isFold(value: any) {
       isCollapse.value = value
     }
-    function aaa() {
-      console.log('--')
-    }
-    return { isFold, isCollapse, aaa }
+    return { isFold, isCollapse }
   }
 })
 </script>

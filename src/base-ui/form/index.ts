@@ -1,2 +1,2 @@
 import myForm from './src/form.vue'
-export { myForm }
+export default myForm
